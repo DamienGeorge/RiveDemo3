@@ -142,7 +142,7 @@ try {
                                     console.log('Geolocation is not available, using IP-based location', data.city);
                                     location.value = data.city;
                                 } catch (error) {
-                                   location.value = 'Bangalore';
+                                    location.value = 'Bangalore';
                                 }
                             }
                         });
@@ -157,35 +157,43 @@ try {
             const hourInput = viewModelInstance.number('Hour Calc');
             const secondInput = viewModelInstance.number('Second Calc');
             const minSecInput = viewModelInstance.number('MinSec Calc');
-            
+
             const yearInput = viewModelInstance.number('Year');
             const monthInput = viewModelInstance.string('Month');
             const dayInput = viewModelInstance.string('Day');
             const dateInput = viewModelInstance.number('Date');
-            let incrementForSmoothening = 0;
 
+            let incrementForSmoothening = 0;
+            let lastUsedHour = 0;
+            let timerStarted = false;
             // --- Time/Date/Weather update function ---
             function updateRiveTimeAndWeather() {
                 if (speed !== 1) {
                     date = spedUpDate;
                 } else {
                     date = new Date();
-                }                
+                }
 
                 // 24 hour clock
                 const minute = date.getMinutes();
                 const hour = date.getHours();
 
-                if(6<=hour && hour<=7 || 18<=hour && hour<=19){
-                    if(speed === 1){
-                        minSecInput.value = minute + date.getSeconds()/60;
+                if (6 <= hour && hour <= 7 || 18 <= hour && hour <= 19) {
+                    if (speed === 1) {
+                        minSecInput.value = minute + date.getSeconds() / 60;
                     }
                     else {
-                        minSecInput.value = minute + incrementForSmoothening/100;
-                        incrementForSmoothening++;
+                        if (timerStarted === false) {
+                            incrementForSmoothening = 0;
+                            lastUsedHour = hour;
+                            timerStarted = true;
+                            intervalId = runSmoothening(minSecInput);
+                        }
+                        else if (hour === lastUsedHour + 1) {
+                            timerStarted = false;
+                            clearInterval(intervalId);
+                        }
                     }
-                }else{
-                    incrementForSmoothening = 0;
                 }
 
                 minuteInput.value = minute;
@@ -226,6 +234,10 @@ try {
     console.error('Error initializing Rive:', error);
 }
 
+function runSmoothening(minSecInput) {
+    minSecInput.value = spedUpDate.getMinutes() + incrementForSmoothening++ / 60;
+    return setInterval(runSmoothening, timeout / 60);
+}
 
 // Handle window resize
 window.addEventListener('resize', () => {
@@ -444,7 +456,7 @@ function setSpeed(newSpeed) {
         IsDemo = false;
         timeout = baseTimeout;
         IsSpedUp = false;
-       
+
     } else {
         IsDemo = true;
         timeout = (baseTimeout * multiplier) / speed;
