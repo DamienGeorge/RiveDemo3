@@ -187,11 +187,12 @@ try {
                             incrementForSmoothening = 0;
                             lastUsedHour = hour;
                             timerStarted = true;
-                            intervalId = runSmoothening(minSecInput);
+                            runSmoothening(minSecInput);
                         }
                         else if (hour === lastUsedHour + 1) {
                             timerStarted = false;
-                            clearInterval(intervalId);
+                            console.log('clearing interval', window.smootheningIntervalId);
+                            clearInterval(window.smootheningIntervalId);
                         }
                     }
                 }
@@ -236,7 +237,7 @@ try {
 
 function runSmoothening(minSecInput) {
     minSecInput.value = spedUpDate.getMinutes() + incrementForSmoothening++ / 60;
-    return setInterval(runSmoothening, timeout / 60);
+    window.smootheningIntervalId = setInterval(runSmoothening, timeout / 60);
 }
 
 // Handle window resize
