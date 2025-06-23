@@ -158,19 +158,25 @@ try {
             const hourInput = viewModelInstance.number('Hour Calc');
             const secondInput = viewModelInstance.number('Seconds Calc');
             const minSecInput = viewModelInstance.number('MinSec Calc');
+            const currentSecond = viewModelInstance.number('Current Second');
 
             const yearInput = viewModelInstance.number('Year');
             const monthInput = viewModelInstance.string('Month');
             const dayInput = viewModelInstance.string('Day');
             const dateInput = viewModelInstance.number('Date');
-
-            let lastUsedHour = 0;
+            
             let timerStarted = false;
 
-            /* function runSmoothening() {
-                minSecInput.value = spedUpDate.getMinutes() + incrementForSmoothening++ / 60;
+
+            function runSmoothening() {
+                if (incrementForSmoothening < 60) {
+                    console.log("Current Sped Up Second", incrementForSmoothening++);
+                }
+                else {
+                    incrementForSmoothening = 0;
+                }
                 window.smootheningIntervalId = setInterval(runSmoothening, timeout / 60);
-            } */
+            }
 
             // --- Time/Date/Weather update function ---
             function updateRiveTimeAndWeather() {
@@ -192,24 +198,27 @@ try {
                 console.log("Second", secondInput.value);
                 console.log("MinSec", minSecInput.value);
 
-                /* if (6 <= hour && hour <= 7 || 18 <= hour && hour <= 19) {
+                if (6 === hour || 18 === hour) {
                     if (speed === 1) {
-                        minSecInput.value = minute + date.getSeconds() / 60;
+                        /* minSecInput.value = minute + date.getSeconds() / 60; */
+                        console.log("Current Seconds", date.getSeconds());
                     }
                     else {
                         if (timerStarted === false) {
                             incrementForSmoothening = 0;
-                            lastUsedHour = hour;
                             timerStarted = true;
+                            console.log('beginning smoothening');
                             runSmoothening();
                         }
-                        else if (hour === lastUsedHour + 1) {
-                            timerStarted = false;
-                            console.log('clearing interval', window.smootheningIntervalId);
-                            clearInterval(window.smootheningIntervalId);
-                        }
                     }
-                } */
+                }
+                else if (timerStarted && (hour === 7 || hour === 19)) {
+                    if (speed !== 1) {
+                        timerStarted = false;
+                        console.log('clearing interval', window.smootheningIntervalId);
+                        clearInterval(window.smootheningIntervalId);
+                    }
+                }
 
                 yearInput.value = date.getFullYear();
                 monthInput.value = date.toLocaleString('default', { month: 'long' });
@@ -359,7 +368,7 @@ function toggleLayout(date) {
             layoutToggleMap.clear();
             layoutToggleMap.set(currentMinute, true);
 
-            if (currentMinute === 7 || currentMinute === 17 || currentMinute === 27 || currentMinute === 37 || currentMinute === 53) {
+            if (currentMinute === 7 || currentMinute === 17 || currentMinute === 27 || currentMinute === 38 || currentMinute === 53) {
                 fireTrigger(LayoutHTriggerName);
                 isStandardLayout = true;
             }
@@ -380,7 +389,7 @@ function toggleLayout(date) {
                         fireTrigger(TrTransport);
                         isStandardLayout = false;
                         break;
-                    case 32:
+                    case 31:
                         fireTrigger(TrArrivals);
                         isStandardLayout = false;
                         break;
