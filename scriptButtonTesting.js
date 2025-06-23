@@ -167,17 +167,10 @@ try {
             let lastUsedHour = 0;
             let timerStarted = false;
 
-            function runSmoothening() {
+            /* function runSmoothening() {
                 minSecInput.value = spedUpDate.getMinutes() + incrementForSmoothening++ / 60;
                 window.smootheningIntervalId = setInterval(runSmoothening, timeout / 60);
-            }
-
-            minuteInput.value = minute;
-            hourInput.value = hour;
-            
-            console.log("Minute", minuteInput.value);
-            console.log("Hour", hourInput.value);
-            console.log("MinSec", minSecInput.value);
+            } */
 
             // --- Time/Date/Weather update function ---
             function updateRiveTimeAndWeather() {
@@ -191,6 +184,14 @@ try {
                 const minute = date.getMinutes();
                 const hour = date.getHours();
 
+                minuteInput.value = minute;
+                hourInput.value = hour;
+
+                console.log("Minute", minuteInput.value);
+                console.log("Hour", hourInput.value);
+                console.log("Second", secondInput.value);
+                console.log("MinSec", minSecInput.value);
+                
                 /* if (6 <= hour && hour <= 7 || 18 <= hour && hour <= 19) {
                     if (speed === 1) {
                         minSecInput.value = minute + date.getSeconds() / 60;
