@@ -23,6 +23,7 @@ let lastToggledDate;
 const layoutToggleMap = new Map();
 let IsSpedUp = false;
 let interpolationSpeed = null;
+let incrementForSmoothening = 0;
 //#endregion
 
 //#region Constants
@@ -92,7 +93,7 @@ try {
         .addEventListener("change", computeSize);
 
     riveInstance = new rive.Rive({
-        src: 'time_main_r8.riv',
+        src: 'time_main_r9.riv',
         canvas: canvas,
         autoplay: true,
         autoBind: true,
@@ -163,9 +164,14 @@ try {
             const dayInput = viewModelInstance.string('Day');
             const dateInput = viewModelInstance.number('Date');
 
-            let incrementForSmoothening = 0;
             let lastUsedHour = 0;
             let timerStarted = false;
+
+            function runSmoothening() {
+                minSecInput.value = spedUpDate.getMinutes() + incrementForSmoothening++ / 60;
+                window.smootheningIntervalId = setInterval(runSmoothening, timeout / 60);
+            }
+
             // --- Time/Date/Weather update function ---
             function updateRiveTimeAndWeather() {
                 if (speed !== 1) {
@@ -187,7 +193,7 @@ try {
                             incrementForSmoothening = 0;
                             lastUsedHour = hour;
                             timerStarted = true;
-                            runSmoothening(minSecInput);
+                            runSmoothening();
                         }
                         else if (hour === lastUsedHour + 1) {
                             timerStarted = false;
@@ -233,11 +239,6 @@ try {
 
 } catch (error) {
     console.error('Error initializing Rive:', error);
-}
-
-function runSmoothening(minSecInput) {
-    minSecInput.value = spedUpDate.getMinutes() + incrementForSmoothening++ / 60;
-    window.smootheningIntervalId = setInterval(runSmoothening, timeout / 60);
 }
 
 // Handle window resize
