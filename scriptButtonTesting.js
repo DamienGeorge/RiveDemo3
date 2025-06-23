@@ -93,7 +93,7 @@ try {
         .addEventListener("change", computeSize);
 
     riveInstance = new rive.Rive({
-        src: 'time_main_r8.riv',
+        src: 'time_main_r9.riv',
         canvas: canvas,
         autoplay: true,
         autoBind: true,
@@ -172,6 +172,13 @@ try {
                 window.smootheningIntervalId = setInterval(runSmoothening, timeout / 60);
             }
 
+            minuteInput.value = minute;
+            hourInput.value = hour;
+            
+            console.log("Minute", minuteInput.value);
+            console.log("Hour", hourInput.value);
+            console.log("MinSec", minSecInput.value);
+
             // --- Time/Date/Weather update function ---
             function updateRiveTimeAndWeather() {
                 if (speed !== 1) {
@@ -184,7 +191,7 @@ try {
                 const minute = date.getMinutes();
                 const hour = date.getHours();
 
-                if (6 <= hour && hour <= 7 || 18 <= hour && hour <= 19) {
+                /* if (6 <= hour && hour <= 7 || 18 <= hour && hour <= 19) {
                     if (speed === 1) {
                         minSecInput.value = minute + date.getSeconds() / 60;
                     }
@@ -201,11 +208,7 @@ try {
                             clearInterval(window.smootheningIntervalId);
                         }
                     }
-                }
-
-                minuteInput.value = minute;
-                hourInput.value = hour;
-                console.log("MinSec", minSecInput.value);
+                } */
 
                 yearInput.value = date.getFullYear();
                 monthInput.value = date.toLocaleString('default', { month: 'long' });
