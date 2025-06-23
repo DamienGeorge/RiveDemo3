@@ -93,7 +93,7 @@ try {
         .addEventListener("change", computeSize);
 
     riveInstance = new rive.Rive({
-        src: 'time_main_r9.riv',
+        src: 'time_main_r8.riv',
         canvas: canvas,
         autoplay: true,
         autoBind: true,
