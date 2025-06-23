@@ -156,7 +156,7 @@ try {
 
             const minuteInput = viewModelInstance.number('Minute Calc');
             const hourInput = viewModelInstance.number('Hour Calc');
-            const secondInput = viewModelInstance.number('Second Calc');
+            const secondInput = viewModelInstance.number('Seconds Calc');
             const minSecInput = viewModelInstance.number('MinSec Calc');
 
             const yearInput = viewModelInstance.number('Year');
@@ -191,7 +191,7 @@ try {
                 console.log("Hour", hourInput.value);
                 console.log("Second", secondInput.value);
                 console.log("MinSec", minSecInput.value);
-                
+
                 /* if (6 <= hour && hour <= 7 || 18 <= hour && hour <= 19) {
                     if (speed === 1) {
                         minSecInput.value = minute + date.getSeconds() / 60;
