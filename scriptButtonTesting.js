@@ -164,7 +164,7 @@ try {
             const monthInput = viewModelInstance.string('Month');
             const dayInput = viewModelInstance.string('Day');
             const dateInput = viewModelInstance.number('Date');
-            
+
             let timerStarted = false;
 
 
@@ -368,7 +368,7 @@ function toggleLayout(date) {
             layoutToggleMap.clear();
             layoutToggleMap.set(currentMinute, true);
 
-            if (currentMinute === 7 || currentMinute === 17 || currentMinute === 27 || currentMinute === 38 || currentMinute === 53) {
+            if (currentMinute === 7 || currentMinute === 17 || currentMinute === 27 || currentMinute === 39 || currentMinute === 53) {
                 fireTrigger(LayoutHTriggerName);
                 isStandardLayout = true;
             }
