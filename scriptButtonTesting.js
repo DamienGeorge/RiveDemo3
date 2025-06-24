@@ -71,7 +71,7 @@ try {
         artboard: "Button Testing Main",
         stateMachines: controlsStateMachine, // This ensures that animation is playing
         onLoad: () => {
-            console.log('Rive animation loaded successfully');
+            console.log('Rive Menu File loaded successfully');
             // Fit the animation to the canvas
             computeSize();
 
@@ -100,20 +100,14 @@ try {
         artboard: "Time Calc H",
         stateMachines: 'Main state machine',
         onLoad: () => {
-            console.log('Rive animation loaded successfully');
+            console.log('Rive Main File loaded successfully');
             riveInstance.resizeDrawingSurfaceToCanvas();
-
-            /* const viewModel = riveInstance.viewModelByIndex(0);
-            const viewModelInstance = viewModel.instanceByName('MainInstance');
-
-            riveInstance.bindViewModelInstance(viewModelInstance); */
 
             const viewModelInstance = riveInstance.viewModelInstance;
 
             const location = viewModelInstance.string('City Name');
 
             inputs = riveInstance.stateMachineInputs(stateMachine);
-            /*  console.log(inputs); */
 
             //Location logic
             if (navigator.geolocation) {
@@ -158,7 +152,6 @@ try {
             const hourInput = viewModelInstance.number('Hour Calc');
             const secondInput = viewModelInstance.number('Seconds Calc');
             const minSecInput = viewModelInstance.number('MinSec Calc');
-            const currentSecond = viewModelInstance.number('Current Second');
 
             const yearInput = viewModelInstance.number('Year');
             const monthInput = viewModelInstance.string('Month');
@@ -192,10 +185,17 @@ try {
                 const minute = date.getMinutes();
                 const hour = date.getHours();
 
-                minuteInput.value = minute;
-                hourInput.value = hour;
-
-                console.log("Minute", minuteInput.value);
+                // Only set minute if it has changed
+                if (minuteInput.value !== minute) {
+                    minuteInput.value = minute;
+                    console.log("Minute", minuteInput.value);
+                }
+                
+                // Only set hour if it has changed
+                if (hourInput.value !== hour) {
+                    hourInput.value = hour;
+                    console.log("Hour", hourInput.value);
+                }
 
                 if (6 === hour || 18 === hour) {
                     if (speed === 1) {
@@ -204,7 +204,12 @@ try {
                             console.log('clearing interval', window.smootheningIntervalId);
                             clearInterval(window.smootheningIntervalId);
                         }
-                        secondInput.value = date.getSeconds() / 100;
+                        
+                        // Only set second if it has changed
+                        const newSecond = date.getSeconds() / 100;
+                        if (secondInput.value !== newSecond) {
+                            secondInput.value = newSecond;
+                        }
                     }
                     else {
                         if (timerStarted === false) {
@@ -215,16 +220,33 @@ try {
                         }
                     }
                 }
-                else if (timerStarted && (hour === 7 || hour === 19)) {
+                else if (timerStarted) {
                     timerStarted = false;
                     console.log('clearing interval', window.smootheningIntervalId);
                     clearInterval(window.smootheningIntervalId);
                 }
 
-                yearInput.value = date.getFullYear();
-                monthInput.value = date.toLocaleString('default', { month: 'long' });
-                dayInput.value = date.toLocaleString('default', { weekday: 'long' });
-                dateInput.value = date.getDate();
+                // Only set year if it has changed
+                if (yearInput.value !== date.getFullYear()) {
+                    yearInput.value = date.getFullYear();
+                }
+                
+                // Only set month if it has changed
+                const newMonth = date.toLocaleString('default', { month: 'long' });
+                if (monthInput.value !== newMonth) {
+                    monthInput.value = newMonth;
+                }
+                
+                // Only set day if it has changed
+                const newDay = date.toLocaleString('default', { weekday: 'long' });
+                if (dayInput.value !== newDay) {
+                    dayInput.value = newDay;
+                }
+                
+                // Only set date if it has changed
+                if (dateInput.value !== date.getDate()) {
+                    dateInput.value = date.getDate();
+                }
 
                 // Only call toggleLayout in automatic mode
                 if (isAutomaticMode) {
@@ -468,6 +490,10 @@ updateSpeedSwitch(0);
 function setSpeed(newSpeed) {
     speed = newSpeed;
 
+    if (window.speedUpTimeout) {
+        clearTimeout(window.speedUpTimeout);
+    }
+    
     if (speed === 1) {
         IsDemo = false;
         timeout = baseTimeout;
@@ -481,11 +507,6 @@ function setSpeed(newSpeed) {
             spedUpDate = new Date();
             IsSpedUp = true;
         }
-
-        if (window.speedUpTimeout) {
-            clearTimeout(window.speedUpTimeout);
-        }
-
         speedUpTime();
     }
     console.log('speed', speed);
