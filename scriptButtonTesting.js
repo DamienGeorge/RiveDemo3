@@ -113,7 +113,7 @@ try {
             const location = viewModelInstance.string('City Name');
 
             inputs = riveInstance.stateMachineInputs(stateMachine);
-            console.log(inputs);
+           /*  console.log(inputs); */
 
             //Location logic
             if (navigator.geolocation) {
@@ -260,7 +260,7 @@ window.addEventListener('resize', () => {
 });
 
 function OnRiveEventTriggered(event) {
-    console.log(event.data.name);
+    /* console.log(event.data.name); */
     switch (event.data.name) {
         case 'Weather':
             fireTrigger(EnableWeatherEffectsTriggerName);
@@ -303,12 +303,12 @@ function OnRiveEventTriggered(event) {
             break;
         case 'Speed':
             const sliderSpeed = consoleInputs.find(i => i.name === 'Slider speed')
-            console.log(sliderSpeed);
+            /* console.log(sliderSpeed); */
             updateSpeedSwitch(sliderSpeed.value);
             break;
         case 'Auto/Manual':
             const isAutoInput = consoleInputs.find(i => i.name === 'isAuto')
-            console.log(isAutoInput.value);
+            /* console.log(isAutoInput.value); */
             if (isAutoInput.value) {
                 isAutomaticMode = true;
             } else {
@@ -319,7 +319,7 @@ function OnRiveEventTriggered(event) {
             break;
         case 'Main/Detail Layout':
             const mainDetailLayoutInput = consoleInputs.find(i => i.name === 'isMain')
-            console.log(mainDetailLayoutInput.value);
+           /*  console.log(mainDetailLayoutInput.value); */
             if (mainDetailLayoutInput.value) {
                 isStandardLayout = true;
                 fireTrigger(LayoutHTriggerName);
@@ -339,7 +339,7 @@ function SetLayoutH() {
 function fireTrigger(triggerName) {
     if (inputs) {
         const trigger = inputs.find(i => i.name === triggerName);
-        console.log(trigger);
+        /* console.log(trigger); */
         trigger.fire();
     }
 }
@@ -359,7 +359,7 @@ function toggleLayout(date) {
     if (!layoutToggleMap.has(currentMinute)) {
         if (IsDemo || (IsDemo == false && date.getSeconds() === 0)) {
 
-            console.log(isStandardLayout);
+            /* console.log(isStandardLayout); */
             layoutToggleMap.clear();
             layoutToggleMap.set(currentMinute, true);
 
@@ -416,13 +416,13 @@ function toggleLayout(date) {
 function TriggerSunny() {
     fireTrigger(SkySunnyTriggerName);
     isSunny = true;
-    console.log('isSunny', isSunny);
+    /* console.log('isSunny', isSunny); */
 }
 
 function TriggerRain() {
     fireTrigger(SkyRainTriggerName);
     isSunny = false;
-    console.log('isSunny', isSunny);
+    /* console.log('isSunny', isSunny); */
 }
 
 function startAutoToggle(date) {
