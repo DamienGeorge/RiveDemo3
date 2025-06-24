@@ -167,18 +167,17 @@ try {
 
             let timerStarted = false;
 
-
+            //Smoothen out the transition for dawn and dusk
             function runSmoothening() {
                 if (incrementForSmoothening < 60) {
-                    if (incrementForSmoothening % 10 === 0) {
-                        console.log("Current Sped Up Second", incrementForSmoothening);
-                    }
-                    incrementForSmoothening++;
+                    secondInput.value = incrementForSmoothening++ / 100;
                 }
                 else {
                     incrementForSmoothening = 0;
-                    console.log("Current Sped Up Second", incrementForSmoothening);
+                    secondInput.value = incrementForSmoothening;
                 }
+
+                console.log("Min Sec value",minSecInput.value);
                 window.smootheningIntervalId = setInterval(runSmoothening, timeout / 60);
             }
 
@@ -466,10 +465,6 @@ updateSpeedSwitch(0);
 function setSpeed(newSpeed) {
     speed = newSpeed;
 
-    if (window.speedUpTimeout) {
-        clearTimeout(window.speedUpTimeout);
-    }
-
     if (speed === 1) {
         IsDemo = false;
         timeout = baseTimeout;
@@ -484,7 +479,11 @@ function setSpeed(newSpeed) {
             IsSpedUp = true;
         }
 
-        setTimeout(speedUpTime);
+        if (window.speedUpTimeout) {
+            clearTimeout(window.speedUpTimeout);
+        }
+
+        speedUpTime();
     }
     console.log('speed', speed);
 }
