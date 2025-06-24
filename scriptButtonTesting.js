@@ -193,11 +193,6 @@ try {
                 minuteInput.value = minute;
                 hourInput.value = hour;
 
-                console.log("Minute", minuteInput.value);
-                console.log("Hour", hourInput.value);
-                console.log("Second", secondInput.value);
-                console.log("MinSec", minSecInput.value);
-
                 if (6 === hour || 18 === hour) {
                     if (speed === 1) {
                         /* minSecInput.value = minute + date.getSeconds() / 60; */
@@ -205,7 +200,7 @@ try {
                     }
                     else {
                         if (timerStarted === false) {
-                            incrementForSmoothening = 0;
+                            incrementForSmoothening = date.getSeconds() ;
                             timerStarted = true;
                             console.log('beginning smoothening');
                             runSmoothening();
@@ -491,6 +486,7 @@ function setSpeed(newSpeed) {
 
 function speedUpTime() {
     spedUpDate.setMinutes(spedUpDate.getMinutes() + 1);
+    console.log("Sped UpMinute", spedUpDate.getMinutes());
     window.speedUpTimeout = setTimeout(speedUpTime, timeout);
 }
 
