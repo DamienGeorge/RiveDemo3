@@ -462,6 +462,10 @@ updateSpeedSwitch(0);
 function setSpeed(newSpeed) {
     speed = newSpeed;
 
+    if (window.speedUpTimeout) {
+        clearTimeout(window.speedUpTimeout);
+    }
+
     if (speed === 1) {
         IsDemo = false;
         timeout = baseTimeout;
@@ -475,10 +479,7 @@ function setSpeed(newSpeed) {
             spedUpDate = new Date();
             IsSpedUp = true;
         }
-
-        if (window.speedUpTimeout) {
-            clearTimeout(window.speedUpTimeout);
-        }
+        
         setTimeout(speedUpTime);
     }
     console.log('speed', speed);
@@ -486,7 +487,6 @@ function setSpeed(newSpeed) {
 
 function speedUpTime() {
     spedUpDate.setMinutes(spedUpDate.getMinutes() + 1);
-    console.log("Sped UpMinute", spedUpDate.getMinutes());
     window.speedUpTimeout = setTimeout(speedUpTime, timeout);
 }
 
