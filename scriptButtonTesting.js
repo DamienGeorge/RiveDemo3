@@ -113,7 +113,7 @@ try {
             const location = viewModelInstance.string('City Name');
 
             inputs = riveInstance.stateMachineInputs(stateMachine);
-           /*  console.log(inputs); */
+            /*  console.log(inputs); */
 
             //Location logic
             if (navigator.geolocation) {
@@ -170,7 +170,9 @@ try {
 
             function runSmoothening() {
                 if (incrementForSmoothening < 60) {
-                    console.log("Current Sped Up Second", incrementForSmoothening++);
+                    if (incrementForSmoothening % 10 === 0) {
+                        console.log("Current Sped Up Second", incrementForSmoothening++);
+                    }
                 }
                 else {
                     incrementForSmoothening = 0;
@@ -193,6 +195,8 @@ try {
                 minuteInput.value = minute;
                 hourInput.value = hour;
 
+                console.log("Minute", minuteInput.value);
+
                 if (6 === hour || 18 === hour) {
                     if (speed === 1) {
                         /* minSecInput.value = minute + date.getSeconds() / 60; */
@@ -200,7 +204,7 @@ try {
                     }
                     else {
                         if (timerStarted === false) {
-                            incrementForSmoothening = date.getSeconds() ;
+                            incrementForSmoothening = date.getSeconds();
                             timerStarted = true;
                             console.log('beginning smoothening');
                             runSmoothening();
@@ -208,11 +212,9 @@ try {
                     }
                 }
                 else if (timerStarted && (hour === 7 || hour === 19)) {
-                    if (speed !== 1) {
-                        timerStarted = false;
-                        console.log('clearing interval', window.smootheningIntervalId);
-                        clearInterval(window.smootheningIntervalId);
-                    }
+                    timerStarted = false;
+                    console.log('clearing interval', window.smootheningIntervalId);
+                    clearInterval(window.smootheningIntervalId);
                 }
 
                 yearInput.value = date.getFullYear();
@@ -319,7 +321,7 @@ function OnRiveEventTriggered(event) {
             break;
         case 'Main/Detail Layout':
             const mainDetailLayoutInput = consoleInputs.find(i => i.name === 'isMain')
-           /*  console.log(mainDetailLayoutInput.value); */
+            /*  console.log(mainDetailLayoutInput.value); */
             if (mainDetailLayoutInput.value) {
                 isStandardLayout = true;
                 fireTrigger(LayoutHTriggerName);
@@ -479,7 +481,7 @@ function setSpeed(newSpeed) {
             spedUpDate = new Date();
             IsSpedUp = true;
         }
-        
+
         setTimeout(speedUpTime);
     }
     console.log('speed', speed);
