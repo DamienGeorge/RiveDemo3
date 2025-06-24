@@ -171,11 +171,13 @@ try {
             function runSmoothening() {
                 if (incrementForSmoothening < 60) {
                     if (incrementForSmoothening % 10 === 0) {
-                        console.log("Current Sped Up Second", incrementForSmoothening++);
+                        console.log("Current Sped Up Second", incrementForSmoothening);
                     }
+                    incrementForSmoothening++;
                 }
                 else {
                     incrementForSmoothening = 0;
+                    console.log("Current Sped Up Second", incrementForSmoothening);
                 }
                 window.smootheningIntervalId = setInterval(runSmoothening, timeout / 60);
             }
