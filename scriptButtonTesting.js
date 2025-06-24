@@ -177,7 +177,6 @@ try {
                     secondInput.value = incrementForSmoothening;
                 }
 
-                console.log("Min Sec value",minSecInput.value);
                 window.smootheningIntervalId = setInterval(runSmoothening, timeout / 60);
             }
 
@@ -201,7 +200,11 @@ try {
                 if (6 === hour || 18 === hour) {
                     if (speed === 1) {
                         /* minSecInput.value = minute + date.getSeconds() / 60; */
-                        console.log("Current Seconds", date.getSeconds());
+                        if (window.smootheningIntervalId) {
+                            console.log('clearing interval', window.smootheningIntervalId);
+                            clearInterval(window.smootheningIntervalId);
+                        }
+                        secondInput.value = date.getSeconds() / 100;
                     }
                     else {
                         if (timerStarted === false) {
