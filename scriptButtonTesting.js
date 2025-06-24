@@ -162,15 +162,15 @@ try {
 
             //Smoothen out the transition for dawn and dusk
             function runSmoothening() {
-                if (incrementForSmoothening < 60) {
-                    secondInput.value = incrementForSmoothening++ / 100;
+                if (incrementForSmoothening < 30) {
+                    secondInput.value = incrementForSmoothening + 2 / 100;
                 }
                 else {
                     incrementForSmoothening = 0;
                     secondInput.value = incrementForSmoothening;
                 }
 
-                window.smootheningIntervalId = setInterval(runSmoothening, timeout / 60);
+                window.smootheningIntervalId = setInterval(runSmoothening, timeout / 30);
             }
 
             // --- Time/Date/Weather update function ---
@@ -190,7 +190,7 @@ try {
                     minuteInput.value = minute;
                     console.log("Minute", minuteInput.value);
                 }
-                
+
                 // Only set hour if it has changed
                 if (hourInput.value !== hour) {
                     hourInput.value = hour;
@@ -204,7 +204,7 @@ try {
                             console.log('clearing interval', window.smootheningIntervalId);
                             clearInterval(window.smootheningIntervalId);
                         }
-                        
+
                         // Only set second if it has changed
                         const newSecond = date.getSeconds() / 100;
                         if (secondInput.value !== newSecond) {
@@ -230,19 +230,19 @@ try {
                 if (yearInput.value !== date.getFullYear()) {
                     yearInput.value = date.getFullYear();
                 }
-                
+
                 // Only set month if it has changed
                 const newMonth = date.toLocaleString('default', { month: 'long' });
                 if (monthInput.value !== newMonth) {
                     monthInput.value = newMonth;
                 }
-                
+
                 // Only set day if it has changed
                 const newDay = date.toLocaleString('default', { weekday: 'long' });
                 if (dayInput.value !== newDay) {
                     dayInput.value = newDay;
                 }
-                
+
                 // Only set date if it has changed
                 if (dateInput.value !== date.getDate()) {
                     dateInput.value = date.getDate();
@@ -493,7 +493,7 @@ function setSpeed(newSpeed) {
     if (window.speedUpTimeout) {
         clearTimeout(window.speedUpTimeout);
     }
-    
+
     if (speed === 1) {
         IsDemo = false;
         timeout = baseTimeout;
